@@ -184,8 +184,8 @@ where
         let bayer_mask = pattern.as_mask();
         clerk::debug!("Start demosaicing.");
         img.par_enumerate_pixels_mut().for_each(|(x, y, pixel)| {
-            // `(*x & 1) + 2 * (*y & 1)` is the of the current pixel at image (x,y) index in
-            // bayer pattern.
+            // `(*x & 1) + 2 * (*y & 1)` is the of the current pixel at image
+            // (x,y) index in bayer pattern.
             match (
                 unsafe { bayer_mask.get_unchecked(((x & 1) + 2 * (y & 1)) as usize) },
                 x > 0 && y > 0 && x < width - 1 && y < height - 1,
