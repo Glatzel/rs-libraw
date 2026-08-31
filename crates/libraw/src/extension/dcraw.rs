@@ -107,9 +107,10 @@ impl DCRawParams {
         self.exp_preser
             .inspect(|v| unsafe { (*arc_imgdata_ptr.ptr()).params.exp_preser = *v });
         // self.use_rawspeed
-        //     .inspect(|v| unsafe { (*imgdata.ptr()).params.use_rawspeed = *v });
-        // self.use_dng_sdk
-        //     .inspect(|v| unsafe { (*imgdata.ptr()).params.use_dng_sdk = *v });
+        //     .inspect(|v| unsafe { (*imgdata.ptr()).params.use_rawspeed = *v
+        // }); self.use_dng_sdk
+        //     .inspect(|v| unsafe { (*imgdata.ptr()).params.use_dng_sdk = *v
+        // });
         self.no_auto_scale
             .inspect(|v| unsafe { (*arc_imgdata_ptr.ptr()).params.no_auto_scale = *v as i32 });
         self.no_interpolation
