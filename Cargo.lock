@@ -702,8 +702,9 @@ checksum = "ae293c039020f9ec10710af98d29ce6aa2051486638b49c9a6409f3b4a9e98ad"
 
 [[package]]
 name = "image"
-version = "0.25.9"
-source = "git+https://github.com/Glatzel/image-rs#6812e732343b0eaaeeef90ca751dd0e73430fb15"
+version = "0.25.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "85ab80394333c02fe689eaf900ab500fbd0c2213da414687ebf995a65d5a6104"
 dependencies = [
  "bytemuck",
  "byteorder-lite",
@@ -711,10 +712,8 @@ dependencies = [
  "exr",
  "gif",
  "image-webp",
- "jpeg-encoder",
  "moxcms",
  "num-traits",
- "pic-scale-safe",
  "png",
  "qoi",
  "ravif",
@@ -842,12 +841,6 @@ dependencies = [
  "getrandom 0.4.3",
  "libc",
 ]
-
-[[package]]
-name = "jpeg-encoder"
-version = "0.7.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a0370574b86f7eca156b9f298392b5e69a23f8c86f3f865add60bbc2e79467a6"
 
 [[package]]
 name = "lazy_static"
@@ -1239,15 +1232,6 @@ name = "path-slash"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e91099d4268b0e11973f036e885d652fb0b21fedcf69738c627f94db6a44f42"
-
-[[package]]
-name = "pic-scale-safe"
-version = "0.1.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ffbed4c0d9d68f2807b7d109e87920fb385bfd4af56d0af28766a0c679c553e"
-dependencies = [
- "num-traits",
-]
 
 [[package]]
 name = "pin-project-lite"
