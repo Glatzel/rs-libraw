@@ -2,7 +2,13 @@ use core::fmt::{Debug, Display};
 /// The type of each channel in a pixel.
 /// Including `u8`, `u16`, `f32`, `f64`.
 pub trait FornaxPrimitive:
-    image::Primitive + image::traits::Enlargeable+ core::marker::Send + core::marker::Sync + Debug + Display + 'static
+    image::Primitive
+    + image::Enlargeable
+    + core::marker::Send
+    + core::marker::Sync
+    + Debug
+    + Display
+    + 'static
 {
 }
 // impl FornaxPrimitive for usize {}
