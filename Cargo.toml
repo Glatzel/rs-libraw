@@ -20,7 +20,7 @@ fornax = { path = "./crates/fornax" }
 fornax-core = { path = "./crates/fornax-core" }
 fornax-dalim = { path = "./crates/fornax-dalim" }
 fornax-devtool = { path = "./crates/fornax-devtool" }
-image = "0.25.10"
+image = { git = "https://github.com/Glatzel/image-rs" }
 jiff = "0.2.35"
 libc = "0.2.189"
 libraw = { path = "./crates/libraw" }
