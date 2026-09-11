@@ -3,7 +3,7 @@ use image::{ImageBuffer, Luma, Rgb};
 use rayon::prelude::*;
 
 #[inline(always)]
-fn idx(width: u32, x: u32, y: u32) -> usize { y as usize * width as usize + x as usize }
+const fn idx(width: u32, x: u32, y: u32) -> usize { y as usize * width as usize + x as usize }
 
 // ---------- Fast path: caller guarantees (x-1, y-1)..=(x+1, y+1) is in bounds
 // ----------
@@ -11,7 +11,7 @@ fn idx(width: u32, x: u32, y: u32) -> usize { y as usize * width as usize + x as
 /// # Safety
 /// Caller must guarantee `x` is in `1..width-1` and `y` is in `1..height-1`.
 #[inline(always)]
-unsafe fn diagonal_fast<T: FornaxPrimitive>(raw: &[T], width: u32, x: u32, y: u32) -> T {
+unsafe fn diagonal_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
     unsafe {
         let tl = *raw.get_unchecked(idx(width, x - 1, y - 1));
         let tr = *raw.get_unchecked(idx(width, x + 1, y - 1));
@@ -25,7 +25,7 @@ unsafe fn diagonal_fast<T: FornaxPrimitive>(raw: &[T], width: u32, x: u32, y: u3
 /// # Safety
 /// Caller must guarantee `x` is in `1..width-1` and `y` is in `1..height-1`.
 #[inline(always)]
-unsafe fn neighbour_fast<T: FornaxPrimitive>(raw: &[T], width: u32, x: u32, y: u32) -> T {
+unsafe fn neighbour_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
     unsafe {
         let l = *raw.get_unchecked(idx(width, x - 1, y));
         let r = *raw.get_unchecked(idx(width, x + 1, y));
@@ -38,7 +38,7 @@ unsafe fn neighbour_fast<T: FornaxPrimitive>(raw: &[T], width: u32, x: u32, y: u
 /// # Safety
 /// Caller must guarantee `x` is in `1..width-1`.
 #[inline(always)]
-unsafe fn left_right_fast<T: FornaxPrimitive>(raw: &[T], width: u32, x: u32, y: u32) -> T {
+unsafe fn left_right_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
     unsafe {
         let l = *raw.get_unchecked(idx(width, x - 1, y));
         let r = *raw.get_unchecked(idx(width, x + 1, y));
@@ -49,7 +49,7 @@ unsafe fn left_right_fast<T: FornaxPrimitive>(raw: &[T], width: u32, x: u32, y: 
 /// # Safety
 /// Caller must guarantee `y` is in `1..height-1`.
 #[inline(always)]
-unsafe fn top_down_fast<T: FornaxPrimitive>(raw: &[T], width: u32, x: u32, y: u32) -> T {
+unsafe fn top_down_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
     unsafe {
         let t = *raw.get_unchecked(idx(width, x, y - 1));
         let b = *raw.get_unchecked(idx(width, x, y + 1));
@@ -59,8 +59,8 @@ unsafe fn top_down_fast<T: FornaxPrimitive>(raw: &[T], width: u32, x: u32, y: u3
 
 // ---------- Checked path: used only for border rows/columns ----------
 
-fn diagonal_checked<T: FornaxPrimitive>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T {
-    let mut count = 0u32;
+fn diagonal_checked<T>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
+    let mut count = 0_u32;
     let mut sum = T::from(0).unwrap();
     if x > 0 && y > 0 {
         sum = sum + raw[idx(width, x - 1, y - 1)];
@@ -81,8 +81,8 @@ fn diagonal_checked<T: FornaxPrimitive>(raw: &[T], width: u32, height: u32, x: u
     sum / T::from(count).unwrap()
 }
 
-fn neighbour_checked<T: FornaxPrimitive>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T {
-    let mut count = 0u32;
+fn neighbour_checked<T>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
+    let mut count = 0_u32;
     let mut sum = T::from(0).unwrap();
     if x > 0 {
         sum = sum + raw[idx(width, x - 1, y)];
@@ -103,8 +103,8 @@ fn neighbour_checked<T: FornaxPrimitive>(raw: &[T], width: u32, height: u32, x: 
     sum / T::from(count).unwrap()
 }
 
-fn left_right_checked<T: FornaxPrimitive>(raw: &[T], width: u32, x: u32, y: u32) -> T {
-    let mut count = 0u32;
+fn left_right_checked<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
+    let mut count = 0_u32;
     let mut sum = T::from(0).unwrap();
     if x > 0 {
         sum = sum + raw[idx(width, x - 1, y)];
@@ -117,8 +117,8 @@ fn left_right_checked<T: FornaxPrimitive>(raw: &[T], width: u32, x: u32, y: u32)
     sum / T::from(count).unwrap()
 }
 
-fn top_down_checked<T: FornaxPrimitive>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T {
-    let mut count = 0u32;
+fn top_down_checked<T>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
+    let mut count = 0_u32;
     let mut sum = T::from(0).unwrap();
     if y > 0 {
         sum = sum + raw[idx(width, x, y - 1)];
@@ -134,14 +134,14 @@ fn top_down_checked<T: FornaxPrimitive>(raw: &[T], width: u32, height: u32, x: u
 // ---------- Per-pixel dispatch ----------
 
 #[inline(always)]
-fn write_pixel_fast<T: FornaxPrimitive>(
+fn write_pixel_fast<T>(
     raw_mosaic: &[T],
     width: u32,
     x: u32,
     y: u32,
     channel: BayerChannel,
     out_row: &mut [T],
-) {
+) where T: FornaxPrimitive {
     let o = x as usize * 3;
     // SAFETY: caller only invokes this for x in 1..width-1, y in 1..height-1.
     unsafe {
@@ -172,7 +172,7 @@ fn write_pixel_fast<T: FornaxPrimitive>(
 }
 
 #[inline(always)]
-fn write_pixel_checked<T: FornaxPrimitive>(
+fn write_pixel_checked<T>(
     raw_mosaic: &[T],
     width: u32,
     height: u32,
@@ -180,7 +180,7 @@ fn write_pixel_checked<T: FornaxPrimitive>(
     y: u32,
     channel: BayerChannel,
     out_row: &mut [T],
-) {
+) where T: FornaxPrimitive {
     let o = x as usize * 3;
     let centre = raw_mosaic[idx(width, x, y)];
     match channel {
