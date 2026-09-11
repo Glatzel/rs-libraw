@@ -11,7 +11,10 @@ const fn idx(width: u32, x: u32, y: u32) -> usize { y as usize * width as usize 
 /// # Safety
 /// Caller must guarantee `x` is in `1..width-1` and `y` is in `1..height-1`.
 #[inline(always)]
-unsafe fn diagonal_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
+unsafe fn diagonal_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T
+where
+    T: FornaxPrimitive,
+{
     unsafe {
         let tl = *raw.get_unchecked(idx(width, x - 1, y - 1));
         let tr = *raw.get_unchecked(idx(width, x + 1, y - 1));
@@ -25,7 +28,10 @@ unsafe fn diagonal_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: 
 /// # Safety
 /// Caller must guarantee `x` is in `1..width-1` and `y` is in `1..height-1`.
 #[inline(always)]
-unsafe fn neighbour_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
+unsafe fn neighbour_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T
+where
+    T: FornaxPrimitive,
+{
     unsafe {
         let l = *raw.get_unchecked(idx(width, x - 1, y));
         let r = *raw.get_unchecked(idx(width, x + 1, y));
@@ -38,7 +44,10 @@ unsafe fn neighbour_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T:
 /// # Safety
 /// Caller must guarantee `x` is in `1..width-1`.
 #[inline(always)]
-unsafe fn left_right_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
+unsafe fn left_right_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T
+where
+    T: FornaxPrimitive,
+{
     unsafe {
         let l = *raw.get_unchecked(idx(width, x - 1, y));
         let r = *raw.get_unchecked(idx(width, x + 1, y));
@@ -49,7 +58,10 @@ unsafe fn left_right_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T
 /// # Safety
 /// Caller must guarantee `y` is in `1..height-1`.
 #[inline(always)]
-unsafe fn top_down_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
+unsafe fn top_down_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T
+where
+    T: FornaxPrimitive,
+{
     unsafe {
         let t = *raw.get_unchecked(idx(width, x, y - 1));
         let b = *raw.get_unchecked(idx(width, x, y + 1));
@@ -59,7 +71,10 @@ unsafe fn top_down_fast<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: 
 
 // ---------- Checked path: used only for border rows/columns ----------
 
-fn diagonal_checked<T>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
+fn diagonal_checked<T>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T
+where
+    T: FornaxPrimitive,
+{
     let mut count = 0_u32;
     let mut sum = T::from(0).unwrap();
     if x > 0 && y > 0 {
@@ -81,7 +96,10 @@ fn diagonal_checked<T>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T 
     sum / T::from(count).unwrap()
 }
 
-fn neighbour_checked<T>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
+fn neighbour_checked<T>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T
+where
+    T: FornaxPrimitive,
+{
     let mut count = 0_u32;
     let mut sum = T::from(0).unwrap();
     if x > 0 {
@@ -103,7 +121,10 @@ fn neighbour_checked<T>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T
     sum / T::from(count).unwrap()
 }
 
-fn left_right_checked<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
+fn left_right_checked<T>(raw: &[T], width: u32, x: u32, y: u32) -> T
+where
+    T: FornaxPrimitive,
+{
     let mut count = 0_u32;
     let mut sum = T::from(0).unwrap();
     if x > 0 {
@@ -117,7 +138,10 @@ fn left_right_checked<T>(raw: &[T], width: u32, x: u32, y: u32) -> T where T: Fo
     sum / T::from(count).unwrap()
 }
 
-fn top_down_checked<T>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T where T: FornaxPrimitive {
+fn top_down_checked<T>(raw: &[T], width: u32, height: u32, x: u32, y: u32) -> T
+where
+    T: FornaxPrimitive,
+{
     let mut count = 0_u32;
     let mut sum = T::from(0).unwrap();
     if y > 0 {
@@ -141,7 +165,9 @@ fn write_pixel_fast<T>(
     y: u32,
     channel: BayerChannel,
     out_row: &mut [T],
-) where T: FornaxPrimitive {
+) where
+    T: FornaxPrimitive,
+{
     let o = x as usize * 3;
     // SAFETY: caller only invokes this for x in 1..width-1, y in 1..height-1.
     unsafe {
@@ -180,7 +206,9 @@ fn write_pixel_checked<T>(
     y: u32,
     channel: BayerChannel,
     out_row: &mut [T],
-) where T: FornaxPrimitive {
+) where
+    T: FornaxPrimitive,
+{
     let o = x as usize * 3;
     let centre = raw_mosaic[idx(width, x, y)];
     match channel {
