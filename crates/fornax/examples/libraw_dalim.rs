@@ -8,7 +8,7 @@ fn main() -> mischief::Result<()> {
 }
 fn linear() -> mischief::Result<()> {
     let dalim = Dalim::<u16>::new(DalimParams {
-        demosaicer: fornax_dalim::Demosaicer::Linear,
+        demosaicer: fornax_dalim::demosaic::Demosaicer::Linear,
     });
     let manager = Fornax::new(libraw::Libraw::new(None), dalim);
     let img = manager
