@@ -16,7 +16,7 @@ jobs:
           files: |
             ./crates/fornax-dalim/benches/**
             ./crates/fornax-dalim/src/demosaic/**
-      - uses: Glatzel/template/.github/actions/rust/setup-rust@b6b99ea17e01b640542095b6232d3ee5e3e7d4fd # v2026.8.30
+      - uses: Glatzel/template/.github/actions/rust/setup-rust@ad33a0f240851891ccb1498fa5d520aafbec454d # v2026.9.11
         if: steps.changed-files.outputs.any_changed == 'true'
-      - uses: Glatzel/template/.github/actions/rust/cargo-bench@b6b99ea17e01b640542095b6232d3ee5e3e7d4fd # v2026.8.30
+      - uses: Glatzel/template/.github/actions/rust/cargo-bench@ad33a0f240851891ccb1498fa5d520aafbec454d # v2026.9.11
         if: steps.changed-files.outputs.any_changed == 'true'
