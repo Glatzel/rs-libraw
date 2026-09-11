@@ -1,6 +1,8 @@
 use criterion::{Criterion, black_box, criterion_group, criterion_main};
-use fornax_core::{BayerImage, FornaxPrimitive, IDecoder};
+use fornax_core::{BayerImage, BayerPattern, FornaxPrimitive, IDecoder};
 use fornax_dalim::demosaic::{DemosaicLinear, IDemosaic};
+use rand::rngs::StdRng;
+use rand::{Rng, RngExt, SeedableRng};
 
 fn bench_methods<M, T>(c: &mut Criterion, name: &str, method: M, image: BayerImage<T>)
 where
@@ -10,9 +12,14 @@ where
     c.bench_function(name, |b| b.iter(|| method.demosaic(black_box(&image))));
 }
 fn benches(c: &mut Criterion) {
-    let libraw = libraw::Libraw::default();
-    IDecoder::<f32>::decode_file(&libraw, &fornax_devtool::raw_file()).unwrap();
-    let image = libraw.bayer_image().unwrap();
+    let mut rng = StdRng::seed_from_u64(12345);
+    let buf: Vec<f32> = (0..1920 * 1080)
+        .map(|_| rng.random_range(0.0..1.0))
+        .collect();
+    let image = BayerImage::<f32>::new(
+        image::ImageBuffer::from_vec(1920, 1080, buf).unwrap(),
+        BayerPattern::RGGB,
+    );
     bench_methods::<_, f32>(c, "linear", DemosaicLinear, image.clone());
 }
 criterion_group!(benches_group, benches);
