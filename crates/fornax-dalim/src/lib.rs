@@ -1,13 +1,14 @@
-use demosaic::IDemosaic;
 use fornax_core::{FornaxError, FornaxPrimitive, IDecoder, IPostProcessor};
 use image::{ImageBuffer, Rgb};
 
-mod demosaic;
-pub use demosaic::Demosaicer;
+use crate::demosaic::IDemosaic;
+
+pub mod demosaic;
+
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct DalimParams {
-    pub demosaicer: Demosaicer,
+    pub demosaicer: demosaic::Demosaicer,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Dalim<T>
@@ -37,7 +38,7 @@ where
         let bayer_image = decoder.bayer_image()?;
 
         let img = match &self.params.demosaicer {
-            Demosaicer::Linear => demosaic::DemosaicLinear.demosaic(&bayer_image),
+            demosaic::Demosaicer::Linear => demosaic::DemosaicLinear.demosaic(&bayer_image),
         };
         Ok(img)
     }

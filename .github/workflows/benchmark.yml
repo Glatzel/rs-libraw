@@ -1,0 +1,26 @@
+name: benchmark
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  cargo-bench:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - id: changed-files
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
+        with:
+          files: |
+            ./crates/fornax-dalim/benches/**
+            ./crates/fornax-dalim/src/demosaic/**
+            ./.github/workflows/benchmark.yml
+      - uses: Glatzel/template/.github/actions/rust/setup-rust@ad33a0f240851891ccb1498fa5d520aafbec454d # v2026.9.11
+        if: steps.changed-files.outputs.any_changed == 'true'
+      - uses: Glatzel/template/.github/actions/rust/cargo-bench@ad33a0f240851891ccb1498fa5d520aafbec454d # v2026.9.11
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          LD_LIBRARY_PATH: ./.pixi/envs/default/lib
+        with:
+          options: -p fornax-dalim

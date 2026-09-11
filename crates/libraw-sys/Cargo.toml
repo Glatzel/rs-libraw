@@ -4,7 +4,7 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
-libc = { workspace = true }
+libc.workspace = true
 
 [build-dependencies]
-bindgen = { workspace = true }
+bindgen.workspace = true
