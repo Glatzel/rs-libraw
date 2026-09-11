@@ -1,8 +1,8 @@
 use criterion::{Criterion, black_box, criterion_group, criterion_main};
-use fornax_core::{BayerImage, BayerPattern, FornaxPrimitive, IDecoder};
+use fornax_core::{BayerImage, BayerPattern, FornaxPrimitive};
 use fornax_dalim::demosaic::{DemosaicLinear, IDemosaic};
 use rand::rngs::StdRng;
-use rand::{Rng, RngExt, SeedableRng};
+use rand::{RngExt, SeedableRng};
 
 fn bench_methods<M, T>(c: &mut Criterion, name: &str, method: M, image: BayerImage<T>)
 where
