@@ -21,4 +21,4 @@ jobs:
       - uses: Glatzel/template/.github/actions/rust/cargo-bench@ad33a0f240851891ccb1498fa5d520aafbec454d # v2026.9.11
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
-          options: -p fornax-dalim --all-features
+          options: -p fornax-dalim
