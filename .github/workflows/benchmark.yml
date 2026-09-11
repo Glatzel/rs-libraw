@@ -1,0 +1,22 @@
+name: benchmark
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  cargo-bench:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - id: changed-files
+        if: ${{github.event_name == 'pull_request'}}
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
+        with:
+          files: |
+            ./crates/fornax-dalim/benches/**
+            ./crates/fornax-dalim/src/demosaic/**
+      - uses: Glatzel/template/.github/actions/rust/setup-rust@b6b99ea17e01b640542095b6232d3ee5e3e7d4fd # v2026.8.30
+        if: steps.changed-files.outputs.any_changed == 'true'
+      - uses: Glatzel/template/.github/actions/rust/cargo-bench@b6b99ea17e01b640542095b6232d3ee5e3e7d4fd # v2026.8.30
+        if: steps.changed-files.outputs.any_changed == 'true'

@@ -4,15 +4,18 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
-clerk = { workspace = true }
-fornax-core = { workspace = true }
-image = { workspace = true }
-rayon = { workspace = true }
+clerk.workspace = true
+fornax-core.workspace = true
+image.workspace = true
+rayon.workspace = true
 serde = { workspace = true, optional = true }
 
 [dev-dependencies]
 clerk = { workspace = true, features = ["tracing"] }
-mischief = { workspace = true }
+criterion.workspace = true
+libraw.workspace = true
+mischief.workspace = true
+fornax-devtool.workspace = true
 
 [features]
 serde = ["dep:serde"]
