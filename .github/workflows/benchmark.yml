@@ -21,7 +21,6 @@ jobs:
       - uses: Glatzel/template/.github/actions/rust/cargo-bench@ad33a0f240851891ccb1498fa5d520aafbec454d # v2026.9.11
         if: steps.changed-files.outputs.any_changed == 'true'
         env:
-          Path: $PATH
-          LD_LIBRARY_PATH: ${{ github.workspace }}/.pixi/envs/default/lib
+          LD_LIBRARY_PATH: ./.pixi/envs/default/lib
         with:
           options: -p fornax-dalim
