@@ -5,7 +5,7 @@ edition.workspace = true
 
 [[bench]]
 harness = false
-name = "linear"
+name = "demosaic"
 
 [dependencies]
 clerk.workspace = true
