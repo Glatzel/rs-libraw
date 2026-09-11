@@ -18,7 +18,14 @@ jobs:
             ./crates/fornax-dalim/src/demosaic/**
       - uses: Glatzel/template/.github/actions/rust/setup-rust@ad33a0f240851891ccb1498fa5d520aafbec454d # v2026.9.11
         if: steps.changed-files.outputs.any_changed == 'true'
+      - name: Add tools to PATH
+        run: |
+          echo "${{ github.workspace }}/.pixi/envs/default/lib" >> "$GITHUB_PATH"
+          echo "LD_LIBRARY_PATH=${{ github.workspace }}/.pixi/envs/default/lib:${LD_LIBRARY_PATH}" >> "$GITHUB_ENV"
       - uses: Glatzel/template/.github/actions/rust/cargo-bench@ad33a0f240851891ccb1498fa5d520aafbec454d # v2026.9.11
         if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          Path: $PATH
+          LD_LIBRARY_PATH: $LD_LIBRARY_PATH
         with:
           options: -p fornax-dalim
