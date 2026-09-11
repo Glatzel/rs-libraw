@@ -4,5 +4,5 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
-image = { workspace = true }
-thiserror = { workspace = true }
+image.workspace = true
+thiserror.workspace = true
